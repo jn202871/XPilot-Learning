@@ -44,8 +44,6 @@ def AI_loop():
   
   trackWallT = (trackWall+trackWallR+trackWallL)/3
 
-  inputs = heading + "," + tracking + "," + frontWall + "," + frontWallL + "," + frontWallR + "," + leftWall + "," + leftWallL + "," + leftWallR + "," + rightWall + "," + rightWallL + "," + rightWallR + "," + backWall + "," + backWallL + "," + backWallR + "," + trackWall + "," + trackWallL + "," + trackWallR
-  print(inputs)
 
   # Fuzzification of distances
   front1 = min(1,max(0,2-(frontWallT/200)))
@@ -116,51 +114,69 @@ def AI_loop():
     avoid = True
   # Small production system for thrust
   head_track_diff = int(180 - abs(abs(heading - tracking) - 180))
+  thrust = 0
   if frontWallT > 500 and ai.selfSpeed() < 15:
-    ai.thrust(1)
+    thrust = 1
   elif frontWallT > leftWallT and frontWallT > rightWallT and frontWallT > backWallT and ai.selfSpeed() < 15:
-    ai.thrust(1)
+    thrust = 1
   elif trackWallT < 300 and 270 >= abs(heading-tracking) >= 90:
-    ai.thrust(1)
+    thrust = 1
   elif backWall < 10:
-    ai.thrust(1)
-  elif ai.selfSpeed() == 0:
-    ai.setPower(5)
-    ai.thrust(1)
+    thrust = 1
+  elif ai.selfSpeed() == 0 and frontWall > 300:
+    thrust = 1
   elif trackWall < 170 and head_track_diff > 90:
-    ai.thrust(1)
+    thrust = 1
   elif backWall < 170 and head_track_diff > 90:
-    ai.thrust(1)
+    thrust = 1
     
   aimDiff = ((ai.aimdir(0)-heading+540)%360)-180
   trackDiff = ((tracking-heading+540)%360)-180
+
+  inputs = heading + "," + tracking + "," + frontWall + "," + frontWallL + "," + frontWallR + "," + leftWall + "," + leftWallL + "," + leftWallR + "," + rightWall + "," + rightWallL + "," + rightWallR + "," + backWall + "," + backWallL + "," + backWallR + "," + trackWall + "," + trackWallL + "," + trackWallR + "," + aimDiff + "," + trackDiff
+  print(inputs)
+  shot = 0
+  right = 0
+  left = 0
   # if behavior is shoot
   if shoot:
-    ai.fireShot()
+    shot = 1
   # if behavior is align
   if align:
     if aimDiff > 0:
-      ai.turnLeft(1)
+      left = 1
     elif aimDiff < 0:
-      ai.turnRight(1)
+      right = 1
   if avoid: # If behavior is not align then avoid
     if leftWallT > rightWallT and trackWallT > 500 and ai.selfSpeed() > 5:
-      ai.turnLeft(1)
+      left = 1
     elif leftWallT < rightWallT and trackWallT > 500 and ai.selfSpeed() > 5:
-      ai.turnRight(1)
+      right = 1
     elif trackDiff > 0 and trackWallT < 500 and ai.selfSpeed() > 10:
-      ai.turnRight(1)
+      right = 1
     elif trackDiff < 0 and trackWallT < 500 and ai.selfSpeed() > 10:
-      ai.turnLeft(1)
+      left = 1
     elif leftWallT > rightWallT and trackWallT < 500:
-      ai.turnLeft(1)
+      left = 1
     elif rightWallT > leftWallT and trackWallT < 500:
-      ai.turnRight(1)
+      right = 1
     elif leftWallT > rightWallT:
-      ai.turnLeft(1)
+      left = 1
     elif leftWallT < rightWallT:
-      ai.turnRight(1)
-    
+      right = 1
+
+  ai.turnLeft(left)
+  ai.turnRight(right)
+  ai.thrust(thrust)
+  ai.shoot(shot)
+
+  outputs = thrust + "," + left + "," + right + "," + shot
+  file1 = open("inputs.txt", "a")  # append mode
+  file2 = open("outputs.txt", "a")  # append mode
+  file1.write(inputs + "\n")
+  file1.close()
+  file2.write(outputs + "\n")
+  file2.close()
   
   
 ai.start(AI_loop,["-name","FuzzyHelp","-join","localhost"])
