@@ -133,7 +133,7 @@ def AI_loop():
   aimDiff = ((ai.aimdir(0)-heading+540)%360)-180
   trackDiff = ((tracking-heading+540)%360)-180
 
-  inputs = heading + "," + tracking + "," + frontWall + "," + frontWallL + "," + frontWallR + "," + leftWall + "," + leftWallL + "," + leftWallR + "," + rightWall + "," + rightWallL + "," + rightWallR + "," + backWall + "," + backWallL + "," + backWallR + "," + trackWall + "," + trackWallL + "," + trackWallR + "," + aimDiff + "," + trackDiff
+  inputs = str(heading) + "," + str(tracking) + "," + str(frontWall) + "," + str(frontWallL) + "," + str(frontWallR) + "," + str(leftWall) + "," + str(leftWallL) + "," + str(leftWallR) + "," + str(rightWall) + "," + str(rightWallL) + "," + str(rightWallR) + "," + str(backWall) + "," + str(backWallL) + "," + str(backWallR) + "," + str(trackWall) + "," + str(trackWallL) + "," + str(trackWallR) + "," + str(rawDist) + "," + str(aimDiff) + "," + str(trackDiff)
   print(inputs)
   shot = 0
   right = 0

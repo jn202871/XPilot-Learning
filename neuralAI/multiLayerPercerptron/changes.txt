@@ -1,3 +1,0 @@
-threshold is -= not += for neurons
-error gradiant needs to be added
-error gradiant is the derivative of the sigmoid function
