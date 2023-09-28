@@ -1,6 +1,3 @@
-package neuralAI.neuralNet;
-
-
 public class OutputLayer extends HiddenLayer{
 
     public OutputLayer(int n_inputs, int n_neurons, HiddenLayer last) {

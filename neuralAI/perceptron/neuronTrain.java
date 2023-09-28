@@ -5,7 +5,6 @@
  Your input for training should be all 32 possible inputs with the corresponding desired output. 
  Run the entire set of 32 inputs/output pairs through several times (try 100, 1000, etc) to do the training.
 */
-package neuralAI.perceptron;
 
 
 public class neuronTrain {
@@ -19,8 +18,8 @@ public class neuronTrain {
             for (int j = 0; j < 32; j++) {
                 int answer = (j == 15 || j == 23 || j == 27 || j == 29 || j == 30 || j == 31) ? 1 : 0;
                 n1.train(tests[j],answer);
-                n1.printWeights();
             }
         }
+        n1.printWeights();
     }
 }

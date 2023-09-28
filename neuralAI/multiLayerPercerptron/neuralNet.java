@@ -1,10 +1,9 @@
-package neuralAI.multiLayerPercerptron;
 
 public class neuralNet {
     private neuron[][] hiddenLayers;
     private neuron outputNeuron;
     private int hiddenLayerCount = 1;
-    private int hiddenLayerWidth = 2;
+    private int hiddenLayerWidth = 3;
     private int inputs = 5;
     private double[] hiddenOutput;
 

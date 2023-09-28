@@ -1,4 +1,4 @@
-package neuralAI.multiLayerPercerptron;
+
 
 public class neuron {
     private double bias;

@@ -1,5 +1,3 @@
-package neuralAI.neuralNet;
-
 public class Neuron {
     private double bias;
     private double alpha;
@@ -40,7 +38,7 @@ public class Neuron {
         for (int i = 0; i < weights.length; i++) {
             weights[i] += alpha * error * input[i];
         }
-        bias += alpha * error;
+        bias += alpha * error * -1;
     }
 
     public void printWeights(){

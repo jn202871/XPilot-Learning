@@ -1,5 +1,4 @@
-package neuralAI.neuralNet;
-
+import java.util.*;
 
 public class HiddenLayer {
     
