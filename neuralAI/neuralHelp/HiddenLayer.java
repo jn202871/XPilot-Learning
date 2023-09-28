@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class HiddenLayer {
+public class HiddenLayer implements Serializable{
     
     double[] inputs;
     double[] outputs;

@@ -141,6 +141,7 @@ def AI_loop():
   # if behavior is shoot
   if shoot:
     shot = 1
+    ai.fireShot()
   # if behavior is align
   if align:
     if aimDiff > 0:
@@ -168,9 +169,8 @@ def AI_loop():
   ai.turnLeft(left)
   ai.turnRight(right)
   ai.thrust(thrust)
-  ai.shoot(shot)
 
-  outputs = thrust + "," + left + "," + right + "," + shot
+  outputs = str(thrust) + "," + str(left) + "," + str(right) + "," + str(shot)
   file1 = open("inputs.txt", "a")  # append mode
   file2 = open("outputs.txt", "a")  # append mode
   file1.write(inputs + "\n")

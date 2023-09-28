@@ -48,5 +48,16 @@ class fuzzyTrain {
 		System.out.println("Correct: " + correct);
 		System.out.println("Incorrect: " + incorrect);
 		System.out.println("Accuracy: " + (correct/(correct+incorrect))*100);
+		try {
+			FileOutputStream file = new FileOutputStream("net.ser", false);
+			ObjectOutputStream out = new ObjectOutputStream(file);
+
+			out.writeObject(net);
+			file.close();
+
+			System.out.println("Network Serialized");
+		} catch (IOException ex) {
+			System.out.println("IOExeption");
+		}
 	}
 }

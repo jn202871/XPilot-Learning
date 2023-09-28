@@ -1,4 +1,6 @@
-public class OutputLayer extends HiddenLayer{
+import java.io.Serializable;
+
+public class OutputLayer extends HiddenLayer implements Serializable{
 
     public OutputLayer(int n_inputs, int n_neurons, HiddenLayer last) {
         super(n_inputs,n_neurons,null,last);
