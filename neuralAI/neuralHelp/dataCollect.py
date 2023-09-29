@@ -132,9 +132,13 @@ def AI_loop():
     
   aimDiff = ((ai.aimdir(0)-heading+540)%360)-180
   trackDiff = ((tracking-heading+540)%360)-180
+  if rawDist > 1000:
+    modDist = 1000
+  else:
+    modDist = rawDist
 
-  inputs = str(heading) + "," + str(tracking) + "," + str(frontWall) + "," + str(frontWallL) + "," + str(frontWallR) + "," + str(leftWall) + "," + str(leftWallL) + "," + str(leftWallR) + "," + str(rightWall) + "," + str(rightWallL) + "," + str(rightWallR) + "," + str(backWall) + "," + str(backWallL) + "," + str(backWallR) + "," + str(trackWall) + "," + str(trackWallL) + "," + str(trackWallR) + "," + str(rawDist) + "," + str(aimDiff) + "," + str(trackDiff)
-  print(inputs)
+  inputs = str(heading/360) + "," + str(tracking/360) + "," + str(frontWall/1000) + "," + str(frontWallL/1000) + "," + str(frontWallR/1000) + "," + str(leftWall/1000) + "," + str(leftWallL/1000) + "," + str(leftWallR/1000) + "," + str(rightWall/1000) + "," + str(rightWallL/1000) + "," + str(rightWallR/1000) + "," + str(backWall/1000) + "," + str(backWallL/1000) + "," + str(backWallR/1000) + "," + str(trackWall/1000) + "," + str(trackWallL/1000) + "," + str(trackWallR/1000) + "," + str(modDist/1000) + "," + str(aimDiff/180) + "," + str(trackDiff/180) + "," + str(ai.selfSpeed()/20)
+  print(ai.selfSpeed())
   shot = 0
   right = 0
   left = 0
@@ -171,12 +175,13 @@ def AI_loop():
   ai.thrust(thrust)
 
   outputs = str(thrust) + "," + str(left) + "," + str(right) + "," + str(shot)
-  file1 = open("inputs.txt", "a")  # append mode
-  file2 = open("outputs.txt", "a")  # append mode
-  file1.write(inputs + "\n")
-  file1.close()
-  file2.write(outputs + "\n")
-  file2.close()
+  if ai.selfAlive() == 1 and rawDist < 5000:
+  	file1 = open("inputs.txt", "a")  # append mode
+  	file2 = open("outputs.txt", "a")  # append mode
+  	file1.write(inputs + "\n")
+  	file1.close()
+  	file2.write(outputs + "\n")
+  	file2.close()
   
   
 ai.start(AI_loop,["-name","FuzzyHelp","-join","localhost"])

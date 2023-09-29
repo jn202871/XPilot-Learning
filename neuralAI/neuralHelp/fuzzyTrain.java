@@ -3,11 +3,17 @@ import java.util.Arrays;
 
 class fuzzyTrain {
 	public static void main(String[] args) throws Exception {
-		Network net = new Network(2,20,4,14);
+		Network net = new Network(2,21,4,16);
 		double correct = 0;
 		double incorrect = 0;
 		int epoch = 1000;
+		double elapsedTotal = 0;
+		double totalTime = 0;
 		for (int j = 0; j < epoch; j++) {
+		double startTime = System.nanoTime();
+		totalTime += startTime;
+		System.out.println("Starting Epoch #: " + j + " | Epoch Time: " + elapsedTotal);
+		elapsedTotal = 0;
 		correct = 0;
 		incorrect = 0;
 		File input = new File("./inputs.txt");
@@ -17,7 +23,7 @@ class fuzzyTrain {
 		String in;
 		String out;
 		while ((in = bri.readLine()) != null) {
-		if (Math.random() > 0.9 || j == epoch-1) {
+		if (Math.random() > 0.9 || j == epoch-1 || true) {
 			out = bro.readLine();
 			String[] inputArr = in.split(",");
 			double[] inputDouble = new double[inputArr.length];
@@ -44,10 +50,14 @@ class fuzzyTrain {
 				net.train(inputDouble,outputDouble);
 			}
 			}
+			elapsedTotal = System.nanoTime() - startTime;
+			elapsedTotal = elapsedTotal/1000000000;
+			totalTime += elapsedTotal;
 		}
 		System.out.println("Correct: " + correct);
 		System.out.println("Incorrect: " + incorrect);
 		System.out.println("Accuracy: " + (correct/(correct+incorrect))*100);
+		System.out.println("Total Training Time: " + totalTime);
 		try {
 			FileOutputStream file = new FileOutputStream("net.ser", false);
 			ObjectOutputStream out = new ObjectOutputStream(file);

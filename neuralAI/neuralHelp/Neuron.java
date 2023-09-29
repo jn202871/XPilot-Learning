@@ -12,7 +12,7 @@ public class Neuron implements Serializable{
             weights[i] = Math.random();
         }
         bias = Math.random() -0.5;
-        alpha = 0.1;
+        alpha = 0.01;
     }
 
     public double think(double input[]) {
