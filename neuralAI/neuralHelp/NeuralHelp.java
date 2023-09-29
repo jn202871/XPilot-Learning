@@ -1,3 +1,6 @@
+// Xpilot agent controlled by a neural network
+// Jay Nash & Russell Kosovsky
+
 import java.io.*;
 import java.util.*;
 
@@ -66,9 +69,11 @@ class NeuralHelp extends javaAI {
                 fireShot();
             }
         }
+
         public NeuralHelp(String args[]) {
                 super(args);
         }
+        
         public static void main(String args[]) {
             String[] new_args = {"-name","Spinner"};
             try {
