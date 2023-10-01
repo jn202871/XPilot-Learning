@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 class fuzzyTrain {
 	public static void main(String[] args) throws Exception {
-		Network net = new Network(2,21,4,16);
+		Network net = new Network(2,15,4,12);
 		double correct = 0;
 		double incorrect = 0;
 		int epoch = 1000;
@@ -16,8 +16,8 @@ class fuzzyTrain {
 		elapsedTotal = 0;
 		correct = 0;
 		incorrect = 0;
-		File input = new File("./inputs.txt");
-		File output = new File("./outputs.txt");
+		File input = new File("./inputs_15.txt");
+		File output = new File("./outputs_15.txt");
 		BufferedReader bri = new BufferedReader(new FileReader(input));
 		BufferedReader bro = new BufferedReader(new FileReader(output));
 		String in;
@@ -53,13 +53,14 @@ class fuzzyTrain {
 			elapsedTotal = System.nanoTime() - startTime;
 			elapsedTotal = elapsedTotal/1000000000;
 			totalTime += elapsedTotal;
+			
+			System.out.println("Correct: " + correct);
+			System.out.println("Incorrect: " + incorrect);
+			System.out.println("Accuracy: " + (correct/(correct+incorrect))*100);
 		}
-		System.out.println("Correct: " + correct);
-		System.out.println("Incorrect: " + incorrect);
-		System.out.println("Accuracy: " + (correct/(correct+incorrect))*100);
 		System.out.println("Total Training Time: " + totalTime);
 		try {
-			FileOutputStream file = new FileOutputStream("net.ser", false);
+			FileOutputStream file = new FileOutputStream("net_15.ser", false);
 			ObjectOutputStream out = new ObjectOutputStream(file);
 
 			out.writeObject(net);

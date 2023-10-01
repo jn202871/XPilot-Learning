@@ -21,9 +21,15 @@ def AI_loop():
   frontWallL = ai.wallFeeler(1000,heading+10)
   frontWallR = ai.wallFeeler(1000,heading-10)
   
+  frontLeft = ai.wallFeeler(1000,heading+45)
+  backLeft = ai.wallFeeler(1000,heading+135)
+  
   leftWall = ai.wallFeeler(1000,heading+90)
   leftWallL = ai.wallFeeler(1000,heading+100)
   leftWallR = ai.wallFeeler(1000,heading+80)
+  
+  frontRight = ai.wallFeeler(1000,heading-45)
+  backRight = ai.wallFeeler(1000,heading-135)
   
   rightWall = ai.wallFeeler(1000,heading+270)
   rightWallL = ai.wallFeeler(1000,heading+280)
@@ -136,9 +142,13 @@ def AI_loop():
     modDist = 1000
   else:
     modDist = rawDist
+    
+  if ai.wallBetween(ai.selfX(),ai.selfY(),ai.screenEnemyX(0),ai.screenEnemyY(0)) != -1:
+  	wallBetween = 1
+  else:
+  	wallBetween = 0
 
-  inputs = str(heading/360) + "," + str(tracking/360) + "," + str(frontWall/1000) + "," + str(frontWallL/1000) + "," + str(frontWallR/1000) + "," + str(leftWall/1000) + "," + str(leftWallL/1000) + "," + str(leftWallR/1000) + "," + str(rightWall/1000) + "," + str(rightWallL/1000) + "," + str(rightWallR/1000) + "," + str(backWall/1000) + "," + str(backWallL/1000) + "," + str(backWallR/1000) + "," + str(trackWall/1000) + "," + str(trackWallL/1000) + "," + str(trackWallR/1000) + "," + str(modDist/1000) + "," + str(aimDiff/180) + "," + str(trackDiff/180) + "," + str(ai.selfSpeed()/20)
-  print(ai.selfSpeed())
+  inputs = str(heading/360) + "," + str(tracking/360) + "," + str(frontWall/1000) + "," + str(frontLeft/1000) + "," + str(backLeft/1000) + "," + str(leftWall/1000) + "," + str(frontRight/1000) + "," + str(backRight/1000) + "," + str(rightWall/1000) + "," + str(backWall/1000) + "," + str(trackWall/1000) + "," + str(modDist/1000) + "," + str(aimDiff/180) + "," + str(ai.selfSpeed()/15) + "," + str(wallBetween)
   shot = 0
   right = 0
   left = 0
@@ -176,12 +186,12 @@ def AI_loop():
 
   outputs = str(thrust) + "," + str(left) + "," + str(right) + "," + str(shot)
   if ai.selfAlive() == 1 and rawDist < 5000:
-  	file1 = open("inputs.txt", "a")  # append mode
-  	file2 = open("outputs.txt", "a")  # append mode
+  	file1 = open("inputs_15_4.txt", "a")  # append mode
+  	file2 = open("outputs_15_4.txt", "a")  # append mode
   	file1.write(inputs + "\n")
   	file1.close()
   	file2.write(outputs + "\n")
   	file2.close()
   
-  
+ai.headlessMode()
 ai.start(AI_loop,["-name","FuzzyHelp","-join","localhost"])

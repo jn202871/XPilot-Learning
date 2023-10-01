@@ -20,6 +20,12 @@ class NeuralHelp extends javaAI {
             } else {
             	modDist = rawDist;
             }
+            
+            int wallBetween = 0;
+            
+            if (wallBetween(selfX(),selfY(),screenEnemyX(0),screenEnemyY(0),-1,0) != -1) {
+            	wallBetween = 1;
+            } else {wallBetween = 0;}
 
             double[] inputs = {
                 selfHeadingDeg()/360,
@@ -28,10 +34,16 @@ class NeuralHelp extends javaAI {
                 wallFeeler(1000,heading)/1000,
                 wallFeeler(1000,heading+10)/1000,
                 wallFeeler(1000,heading-10)/1000,
+                
+                //wallFeeler(1000,heading+45)/1000,
+                //wallFeeler(1000,heading+135)/1000,
   
                 wallFeeler(1000,heading+90)/1000,
                 wallFeeler(1000,heading+100)/1000,
                 wallFeeler(1000,heading+80)/1000,
+                
+                //wallFeeler(1000,heading-45)/1000,
+                //wallFeeler(1000,heading-135)/1000,
   
                 wallFeeler(1000,heading+270)/1000,
                 wallFeeler(1000,heading+280)/1000,
@@ -48,7 +60,8 @@ class NeuralHelp extends javaAI {
                 modDist/1000,
                 aimDiff/180,
                 trackDiff/180,
-                selfSpeed()/10
+                selfSpeed()/10,
+                //wallBetween
             };
             double[] actions = net.think(inputs);
             System.out.println(Arrays.toString(actions));
@@ -70,9 +83,9 @@ class NeuralHelp extends javaAI {
                 super(args);
         }
         public static void main(String args[]) {
-            String[] new_args = {"-name","Spinner"};
+            String[] new_args = {"-name","Help2"};
             try {
-                FileInputStream file = new FileInputStream("net.ser");
+                FileInputStream file = new FileInputStream("net_best_93_21.ser");
                 ObjectInputStream in = new ObjectInputStream(file);
 
                 net = (Network)in.readObject();
