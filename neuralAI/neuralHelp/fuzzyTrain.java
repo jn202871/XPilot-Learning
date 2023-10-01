@@ -1,3 +1,6 @@
+// Purpose: train the network with the collected data
+
+
 import java.io.*;
 import java.util.Arrays;
 

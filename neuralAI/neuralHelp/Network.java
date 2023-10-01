@@ -1,3 +1,5 @@
+// Purpose: Network class for neural network
+
 import java.io.Serializable;
 import java.util.*;
 
