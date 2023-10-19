@@ -60,6 +60,7 @@ public class GeneticAlgorithm {
     }
 
     private void crossover() { //Standard crossover using a random crossover index and substrings, also handles mutation
+                               //Seems like bit-wise crossover works a little better? I believe russell used that and it was able to get to max fitness in 10 or less generations while this takes it roughly 15
       List<Chromosome> newGeneration = new ArrayList<>(); //Temporary new ArrayList to hold the new generation
       for (int i = 0; i < populationSize; i++) {
         Chromosome parent1 = selectParent();
@@ -105,7 +106,7 @@ public class GeneticAlgorithm {
     }
     
     private double averageFitness() { //Finds the average fitness of all individuals
-                                      //You can stream an ArrayList into a function that will apply a math function to everything in the array list, kinda cool
+                                      //Apparently you can stream an ArrayList into a function that will apply a math function to everything in the array list, kinda cool
                                       //Also I have literally no idea what .orElseThrow() does but I get an error without it lol
       return population.stream().mapToInt(chr -> chr.fitness).average().orElseThrow();
     }
@@ -161,8 +162,7 @@ class Chromosome { //Chromosome helper class
       this.fitness = calculateFitness();
     }
 
-    public int calculateFitness() { //This is not great since fitness is only calculated on individual creation or when this function is called
-                                    //A setter function for the genes (for mutation) could make this better so the fitness was always accurate
+    public int calculateFitness() { // Calculates fitness of chromosome
       int fit = 0;
       for (int i = 0; i < genes.length(); i++) {
         if (genes.charAt(i) == '1') {
