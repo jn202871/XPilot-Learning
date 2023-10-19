@@ -9,7 +9,7 @@ public class GeneticAlgorithm {
     private double mutationRate;
     private int chromosomeSize;
     
-    public GeneticAlgorithm(int populationSize, int chromosomeSize, double mutationRate, boolean newPopulation) {
+    public GeneticAlgorithm(int populationSize, int chromosomeSize, double mutationRate, boolean newPopulation) { //Constructor class
       this.populationSize = populationSize;
       this.chromosomeSize = chromosomeSize;
       this.mutationRate = mutationRate;
@@ -17,9 +17,9 @@ public class GeneticAlgorithm {
       this.generation = 0;
     }
 
-    private List<Chromosome> initializePopulation(boolean newPopulation) {
+    private List<Chromosome> initializePopulation(boolean newPopulation) { //Initializes population
       List<Chromosome> tempPopulation = new ArrayList<>();
-      if (newPopulation) {
+      if (newPopulation) { //If making brand new population, generate random chromosomes
         for (int i = 0; i < populationSize; i++) {
           StringBuilder chromosome = new StringBuilder();
           for (int j = 0; j < chromosomeSize; j++) {
@@ -27,7 +27,7 @@ public class GeneticAlgorithm {
           }
           tempPopulation.add(new Chromosome(chromosome.toString()));
         }
-      } else {
+      } else { //If reading population from file... well it reads them from the file
         File populationFile = new File("population.txt");
         try {
           Scanner scan = new Scanner(populationFile);
@@ -47,11 +47,11 @@ public class GeneticAlgorithm {
       return tempPopulation;
     }
 
-    private Chromosome selectParent() {
+    private Chromosome selectParent() { //"Tournament" selection, couldn't get roulette to work, this seems to work fine?
       Random rand = new Random();
-      Chromosome parent = population.get(rand.nextInt(populationSize));
+      Chromosome parent = population.get(rand.nextInt(populationSize)); //Selects random individual for crossover
       for (int i = 0; i < 3; i++) {
-        Chromosome temp = population.get(rand.nextInt(populationSize));
+        Chromosome temp = population.get(rand.nextInt(populationSize)); //Compares random individual to 3 others, takes the best individual of the 4 for crossover
         if (temp.fitness > parent.fitness) {
           parent = temp;
         }
@@ -59,64 +59,58 @@ public class GeneticAlgorithm {
       return parent;
     }
 
-    private void crossover() {
-      List<Chromosome> newGeneration = new ArrayList<>();
+    private void crossover() { //Standard crossover using a random crossover index and substrings, also handles mutation
+      List<Chromosome> newGeneration = new ArrayList<>(); //Temporary new ArrayList to hold the new generation
       for (int i = 0; i < populationSize; i++) {
         Chromosome parent1 = selectParent();
         Chromosome parent2 = selectParent();
 
-        StringBuilder child = new StringBuilder();
+        StringBuilder child = new StringBuilder(); //I love StringBuilder, if only I knew it worked like this over the summer...
         int crossover = new Random().nextInt(chromosomeSize);
         child.append(parent1.genes.substring(0,crossover));
         child.append(parent2.genes.substring(crossover));
+
+        for (int j = 0; j < chromosomeSize; j++) { //Mutation
+          if (Math.random() < mutationRate) {
+            child.setCharAt(j, child.charAt(j) == '0' ? '1' : '0'); //The fact that this exists and works feels like cheating, I put so much more effort in with substrings and char arrays for mutation over the summer >:(
+          }
+        }
 
         newGeneration.add(new Chromosome(child.toString()));
       }
       this.population = newGeneration;
     }
 
-    private void mutate() {
-      for (Chromosome x : population) {
-        StringBuilder genes = new StringBuilder(x.genes);
-        for (int i = 0; i < chromosomeSize; i++) {
-          if (Math.random() < mutationRate) {
-            genes.setCharAt(i, genes.charAt(i) == '0' ? '1' : '0');
-          }
-        }
-        x.genes = genes.toString();
-        x.fitness = x.calculateFitness();
-      }
-    }
-
-    public void run(int maxGenerations) {
+    public void run(int maxGenerations) { //Primary function that handles running the GA through generations and stops when a certain fitness is reached
       while (generation < maxGenerations) {
         crossover();
-        mutate();
         generation++;
 
         Chromosome best = getBest();
         System.out.println("Generation: " + generation + " | Best Fitness: " + best.fitness + " | Average Fitness: " + averageFitness());
-        if (best.fitness == chromosomeSize) {
+        if (best.fitness == chromosomeSize) { //This is kind of a hack since we know the maximum possible fitness and should be changed for the xpilot bot
           System.out.println("Best Chromosome Found: " + best.genes);
           break;
         }
-        if (generation%10 == 0) {
+        if (generation%10 == 0) { //Saving every 10 generations best chromosome and avg fitness
           midSave();
         }
-        rawSave();
+        rawSave(); //Saves the raw chromosome data to file each generation, theres no real point to this lol I thought it was cool
       }
-      save();
+      save(); //Saves final population and fitnesses to file
     }
 
-    private Chromosome getBest() {
+    private Chromosome getBest() { //Finds the best individual from the population, I really wish I knew about the Collections import before now
       return Collections.max(population, Comparator.comparing(chr -> chr.fitness));
     }
-
-    private double averageFitness() {
+    
+    private double averageFitness() { //Finds the average fitness of all individuals
+                                      //You can stream an ArrayList into a function that will apply a math function to everything in the array list, kinda cool
+                                      //Also I have literally no idea what .orElseThrow() does but I get an error without it lol
       return population.stream().mapToInt(chr -> chr.fitness).average().orElseThrow();
     }
 
-    private void midSave() {
+    private void midSave() { //Saves every x generations the best chromosome and the avg fitness of the population
       try {
         FileWriter writer = new FileWriter("./checkpoints/" + Integer.toString(generation) + "_generation_checkpoint.txt", false);
         Chromosome best = getBest();
@@ -124,11 +118,11 @@ public class GeneticAlgorithm {
         writer.write("Best Chromosome: " + best.genes + "\n" + "Best Fitness: " + best.fitness + "\n" + "Average Fitness: " + Double.toString(avg) + "\n");
         writer.close();
       } catch (IOException e) {
-        System.out.println("Error: Could Not Save Checkpoint");
+        System.out.println("Error: Could Not Save Checkpoint, Is ./checkpoints Present?");
       }
     }
 
-    private void rawSave() {
+    private void rawSave() { //Saves all chromosomes to a file every generation
       try {
         FileWriter writer = new FileWriter("./rawData/" + Integer.toString(generation) + "_raw.txt", false);
         for (Chromosome x : population) {
@@ -136,11 +130,11 @@ public class GeneticAlgorithm {
         }
         writer.close();
       } catch (IOException e) {
-        System.out.println("Error: Could Not Save Raw Data");
+        System.out.println("Error: Could Not Save Raw Data, Is ./rawData Present?");
       }
     }
 
-    private void save() {
+    private void save() { //Saves the final population and fitnesses once GA completes
       try {
         FileWriter writer = new FileWriter("final_population.txt", false);
         for (Chromosome x : population) {
@@ -152,13 +146,13 @@ public class GeneticAlgorithm {
       }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //Main function
       GeneticAlgorithm ga = new GeneticAlgorithm(200,64,0.01,false);
       ga.run(1000);
     }
 }
 
-class Chromosome {
+class Chromosome { //Chromosome helper class
     public String genes;
     public int fitness;
 
@@ -167,7 +161,8 @@ class Chromosome {
       this.fitness = calculateFitness();
     }
 
-    public int calculateFitness() {
+    public int calculateFitness() { //This is not great since fitness is only calculated on individual creation or when this function is called
+                                    //A setter function for the genes (for mutation) could make this better so the fitness was always accurate
       int fit = 0;
       for (int i = 0; i < genes.length(); i++) {
         if (genes.charAt(i) == '1') {
@@ -177,9 +172,3 @@ class Chromosome {
       return fit;
     }
 }
-
-class SortByFit implements Comparator<Chromosome> {
-  public int compare(Chromosome a, Chromosome b) {
-    return a.fitness - b.fitness;
-  }
-} 
