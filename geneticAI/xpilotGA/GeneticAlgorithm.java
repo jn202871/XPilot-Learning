@@ -154,7 +154,8 @@ public class GeneticAlgorithm {
       //GeneticAlgorithm ga = new GeneticAlgorithm(200,64,0.001,true);
       //ga.run(1000);
       String[] new_args = {"-name","Petko & Co.","-join","localhost","001001"};
-      Production prod = new Production(new_args);
+      String chromosome = "001001"; //TEMPORARY VARIABLE FOR TESTING
+      Production prod = new Production(new_args, chromosome);
       System.out.println(prod.fitness);
       System.out.println(prod.chromosome);
     }
