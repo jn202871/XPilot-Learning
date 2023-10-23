@@ -151,13 +151,8 @@ public class GeneticAlgorithm {
     }
 
     public static void main(String[] args) { //Main function
-      //GeneticAlgorithm ga = new GeneticAlgorithm(200,64,0.001,true);
-      //ga.run(1000);
-      String[] new_args = {"-name","Petko & Co.","-join","localhost","001001"};
-      String chromosome = "001001"; //TEMPORARY VARIABLE FOR TESTING
-      Production prod = new Production(new_args, chromosome);
-      System.out.println(prod.fitness);
-      System.out.println(prod.chromosome);
+      GeneticAlgorithm ga = new GeneticAlgorithm(200,64,0.001,true);
+      ga.run(1000);
     }
 }
 
@@ -172,11 +167,18 @@ class Chromosome { //Chromosome helper class
 
     public double calculateFitness() { // Calculates fitness of chromosome
       double fit = 0;
-      for (int i = 0; i < genes.length(); i++) {
-        if (genes.charAt(i) == '1') {
-          fit++;
-        }
-      }
+      String[] new_args = {"-name","Petko & Co.","-join","localhost"};
+      String chromosome = "001001"; //TEMPORARY VARIABLE FOR TESTING
+      try {
+      PrintWriter out = new PrintWriter("chromosome.txt");
+      out.println(chromosome);
+	  out.close();
+	  } catch (IOException e) {
+	  System.out.println("uhoh");
+	  }
+      Production prod = new Production(new_args);
+      System.out.println(prod.fitness);
+      System.out.println(prod.chromosome);
       return fit;
     }
 }
