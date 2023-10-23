@@ -44,7 +44,7 @@ class Production extends javaAI {
 			int tracking = (int) selfTrackingDeg();
 			int speed = (int) selfSpeed();
 			int enemyDistance = (int) enemyDistance(0);
-			int aimDirection = Math.abs((((int) aimrdir(0) - heading + 540)%360)-180);
+			int aimDirection = Math.abs((((int) aimdir(0) - heading + 540)%360)-180);
 
 			int frontWall = wallFeeler(1000, heading);
 			int leftWall = wallFeeler(1000, heading + 90);
@@ -102,6 +102,7 @@ class Production extends javaAI {
 				round++;
 				alive = (selfAlive() == 1 ? true : false);
 			} 
+			System.out.println(chromosome);
         }
 		
 		public Production(String args[], String chromosome) {
@@ -109,8 +110,8 @@ class Production extends javaAI {
 			this.chromosome = chromosome;
 		}
 
-//      public static void main(String args[]) {
-//          String[] new_args = {"-name","Petko & Co.","-join","localhost"};
-//          Production production = new Production(new_args);
-//      }
+      public static void main(String args[]) {
+          String[] new_args = {"-name","Petko & Co.","-join","localhost"};
+          Production production = new Production(new_args, "001001");
+      }
 }
