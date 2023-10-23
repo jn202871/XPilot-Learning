@@ -47,7 +47,7 @@ class Production extends javaAI {
 
 			// Example 90-bit string
 			 			  		// 33,    42,   38,   51,   38,   27,   22,   26,   45,   22,   50,   42,   51,   33,   26
-			String exmpl_chrom = "100001101010100110110011100110011011010110011010101101010110110010101010110011100001011010"; 
+			//String exmpl_chrom = "100001101010100110110011100110011011010110011010101101010110110010101010110011100001011010"; 
 			List<Integer> genes = parseChromosome(chromosome);
 	
 			int speedLimit = genes.get(0);
@@ -127,8 +127,7 @@ class Production extends javaAI {
 			if ((selfAlive() == 1 ? true : false) != alive) {
 				round++;
 				alive = (selfAlive() == 1 ? true : false);
-			} 
-			System.out.println(chromosome);
+			}
         }
 		
 		// Helper Function that converts a chromosome (90 bits) to a list of  genes (15 genes, each being 6 bits)
