@@ -151,7 +151,7 @@ public class GeneticAlgorithm {
     }
 
     public static void main(String[] args) { //Main function
-      GeneticAlgorithm ga = new GeneticAlgorithm(200,90,0.001,true);
+      GeneticAlgorithm ga = new GeneticAlgorithm(200, 90, 0.001, true);
       ga.run(1000);
     }
 }
@@ -175,9 +175,12 @@ class Chromosome { //Chromosome helper class
 	  } catch (IOException e) {
 	  System.out.println("uhoh");
 	  }
+      System.out.println("New Agent Chromosome: " + genes);
       Production prod = new Production(new_args);
       System.out.println(prod.fitness);
       System.out.println(prod.chromosome);
+      fit = prod.fitness;
+      prod = null;
       return fit;
     }
 }
