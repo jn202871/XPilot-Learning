@@ -175,7 +175,11 @@ class Chromosome { //Chromosome helper class
 	  } catch (IOException e) {
 	  System.out.println("uhoh");
 	  }
+<<<<<<< HEAD
       System.out.println("New Agent Chromosome: " + genes);
+=======
+	  System.out.println("New Agent Chromosome: " + genes);
+>>>>>>> 19e7f40f8ce04c9b2fa5a2b5bdb1f52ea571bc22
       Production prod = new Production(new_args);
       System.out.println(prod.fitness);
       System.out.println(prod.chromosome);
