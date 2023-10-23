@@ -99,7 +99,7 @@ public class GeneticAlgorithm {
         if (generation%10 == 0) { //Saving every 10 generations best chromosome and avg fitness
           midSave();
         }
-        rawSave(); //Saves the raw chromosome data to file each generation, theres no real point to this lol I thought it was cool
+        //rawSave(); //Saves the raw chromosome data to file each generation, theres no real point to this lol I thought it was cool
       }
       save(); //Saves final population and fitnesses to file
     }
@@ -151,7 +151,7 @@ public class GeneticAlgorithm {
     }
 
     public static void main(String[] args) { //Main function
-      GeneticAlgorithm ga = new GeneticAlgorithm(200,64,0.001,true);
+      GeneticAlgorithm ga = new GeneticAlgorithm(200,90,0.001,true);
       ga.run(1000);
     }
 }
@@ -168,10 +168,9 @@ class Chromosome { //Chromosome helper class
     public double calculateFitness() { // Calculates fitness of chromosome
       double fit = 0;
       String[] new_args = {"-name","Petko & Co.","-join","localhost"};
-      String chromosome = "001001"; //TEMPORARY VARIABLE FOR TESTING
       try {
       PrintWriter out = new PrintWriter("chromosome.txt");
-      out.println(chromosome);
+      out.println(genes);
 	  out.close();
 	  } catch (IOException e) {
 	  System.out.println("uhoh");
